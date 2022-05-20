@@ -2,7 +2,7 @@
 // https://github.com/bahmutov/scrape-youtube-videos/blob/main/upload-to-algolia.js
 //
 
-const { replaceMarkdownUrls } = require('./md-utils')
+const { replaceMarkdownUrls, removeCodeBlocks } = require('./md-utils')
 
 function isHeader1(line) {
   return line.match(/^#\s/)
@@ -34,6 +34,7 @@ function clone(x) {
 
 function parse(markdown) {
   markdown = replaceMarkdownUrls(markdown)
+  markdown = removeCodeBlocks(markdown)
 
   let hierarchy = makeHierarchy()
 

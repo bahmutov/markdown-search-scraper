@@ -14,6 +14,11 @@ const example2 = readFileSync(
   'utf8',
 )
 
+const example3 = readFileSync(
+  join(__dirname, 'fixtures', 'example3.md'),
+  'utf8',
+)
+
 test('example1', (t) => {
   t.plan(1)
   const parsed = parse(example1)
@@ -26,5 +31,12 @@ test('example2', (t) => {
   // we want to make sure the anchor links
   // were parsed and only the text remains
   // and the links themselves were removed
+  t.snapshot(parsed)
+})
+
+test('code blocks', (t) => {
+  t.plan(1)
+  const parsed = parse(example3)
+  // no code blocks
   t.snapshot(parsed)
 })

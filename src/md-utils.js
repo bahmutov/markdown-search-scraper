@@ -6,4 +6,12 @@ function replaceMarkdownUrls(md) {
   return replaced
 }
 
-module.exports = { replaceMarkdownUrls }
+function removeCodeBlocks(md) {
+  const r = /```[^`]+```/g
+  const replaced = md.replace(r, (match, x) => {
+    return ''
+  })
+  return replaced
+}
+
+module.exports = { replaceMarkdownUrls, removeCodeBlocks }
