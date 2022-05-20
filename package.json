@@ -1,0 +1,35 @@
+{
+  "name": "markdown-search-scraper",
+  "version": "0.0.0-development",
+  "description": "Converts Markdown text to Algolia records",
+  "main": "src/parse.js",
+  "scripts": {
+    "test": "ava test/*.test.js",
+    "watch": "ava --watch test/*.test.js",
+    "semantic-release": "semantic-release",
+    "demo": "node bin/markdown-scrape.js ./test/fixtures/example1.md"
+  },
+  "bin": {
+    "markdown-scrape": "bin/markdown-scrape.js"
+  },
+  "files": [
+    "bin",
+    "src"
+  ],
+  "keywords": [
+    "markdown",
+    "scrape",
+    "algolia"
+  ],
+  "author": "Gleb Bahmutov <gleb.bahmutov@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "ava": "^4.2.0",
+    "prettier": "^2.6.2",
+    "semantic-release": "^19.0.2"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/bahmutov/markdown-search-scraper.git"
+  }
+}
