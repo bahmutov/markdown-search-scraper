@@ -33,7 +33,8 @@ function clone(x) {
 }
 
 function parse(markdown) {
-  markdown = replaceMarkdownUrls(markdown)
+  // handle potentially nested links
+  markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
 
   let hierarchy = makeHierarchy()
@@ -58,6 +59,10 @@ function parse(markdown) {
 
   const lines = markdown.split('\n')
   lines.forEach((line) => {
+    if (line.startsWith('> ')) {
+      line = line.slice(2)
+    }
+
     if (isHeader1(line)) {
       saveCurrentText()
 
