@@ -7,7 +7,8 @@
     "test": "ava test/*.test.js",
     "watch": "ava --watch test/*.test.js",
     "semantic-release": "semantic-release",
-    "demo": "node bin/markdown-scrape.js ./test/fixtures/example1.md"
+    "demo": "node bin/markdown-scrape.js ./test/fixtures/example1.md",
+    "demo2": "node bin/markdown-scrape.js ./README.md"
   },
   "bin": {
     "markdown-scrape": "bin/markdown-scrape.js"
