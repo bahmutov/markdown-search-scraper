@@ -21,12 +21,10 @@ test('example1', (t) => {
 })
 
 test('example2', (t) => {
-  t.plan(0)
+  t.plan(1)
   const parsed = parse(example2)
-  // TODO
   // we want to make sure the anchor links
   // were parsed and only the text remains
   // and the links themselves were removed
-  // t.snapshot(parsed)
-  console.log(parsed)
+  t.snapshot(parsed)
 })
