@@ -9,10 +9,16 @@ jobs:
       - uses: bahmutov/npm-install@v1
       - run: npm t
 
-      - name: Demo 1
-        run: npm run demo
-      - name: Demo 2
-        run: npm run demo2
+      - name: Example 1
+        run: npm run example1
+      - name: Example 2
+        run: npm run example2
+      - name: Example 3
+        run: npm run example3
+      - name: Example 4
+        run: npm run example4
+      - name: Demo README
+        run: npm run demo-readme
 
       - name: Semantic Release 🚀
         # https://github.com/cycjimmy/semantic-release-action
