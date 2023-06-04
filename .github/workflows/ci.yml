@@ -5,7 +5,7 @@ jobs:
     runs-on: ubuntu-20.04
     name: Build and test
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v3
       - uses: bahmutov/npm-install@v1
       - run: npm t
 
@@ -15,7 +15,9 @@ jobs:
         run: npm run demo2
 
       - name: Semantic Release 🚀
-        uses: cycjimmy/semantic-release-action@v2
+        # https://github.com/cycjimmy/semantic-release-action
+        uses: cycjimmy/semantic-release-action@v3
+        if: github.ref == 'refs/heads/main'
         with:
           branch: main
         env:
