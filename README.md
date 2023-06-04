@@ -2,6 +2,65 @@
 
 > Converts Markdown text to Algolia records
 
+- removes Markdown markup from URLs
+
+## Install
+
+```
+# install using npm
+$ npm i -D markdown-search-scraper
+# install using yarn
+$ yarn add -D markdown-search-scraper
+```
+
+## Bin
+
+You can parse a given Markdown file and print its Algolia search record as JSON
+
+```
+$ npx markdown-scrape <markdown filename>
+```
+
+## Api
+
+```js
+const { parse } = require('markdown-search-scraper')
+const json = parse(markdownText)
+```
+
+For example, if the markdown is
+
+```md
+# urls
+
+take a look at this [brown fox](at some url) that has [red fur](another url)
+```
+
+Output is something like this:
+
+```json
+[
+  {
+    "type": "lvl0",
+    "content": "urls",
+    "hierarchy": {
+      "lvl0": "urls",
+      "lvl1": null,
+      "lvl2": null
+    }
+  },
+  {
+    "type": "content",
+    "content": "take a look at this brown fox that has red fur",
+    "hierarchy": {
+      "lvl0": "urls",
+      "lvl1": null,
+      "lvl2": null
+    }
+  }
+]
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022
