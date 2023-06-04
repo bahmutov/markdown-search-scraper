@@ -32,7 +32,13 @@ function clone(x) {
   return JSON.parse(JSON.stringify(x))
 }
 
-function parse(markdown) {
+/**
+ * Converts Markdown text into a single Algolia record.
+ * For example, the header 1 will be the level 0 title.
+ * @param {string} markdown Text to parse
+ * @param {string|undefined} level0 Optional level 0 title to set for all records
+ */
+function parse(markdown, level0) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
@@ -41,6 +47,15 @@ function parse(markdown) {
 
   const records = []
   let currentText = ''
+
+  if (level0) {
+    hierarchy = makeHierarchy(level0)
+    records.push({
+      type: 'lvl0',
+      content: level0,
+      hierarchy: clone(hierarchy),
+    })
+  }
 
   function saveCurrentText() {
     if (currentText) {

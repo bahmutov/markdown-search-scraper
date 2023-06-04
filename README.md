@@ -61,6 +61,25 @@ Output is something like this:
 ]
 ```
 
+### Optional level 0 title
+
+You can pass an external top-level title
+
+```js
+const json = parse(markdownText, 'A Custom Recipe')
+/*
+  {
+    "type": "lvl0",
+    "content": "A Custom Recipe",
+    "hierarchy": {
+      "lvl0": "A Custom Recipe",
+      "lvl1": null,
+      "lvl2": null
+    }
+  }
+*/
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022

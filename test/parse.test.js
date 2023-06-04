@@ -24,6 +24,11 @@ const example4 = readFileSync(
   'utf8',
 )
 
+const example5 = readFileSync(
+  join(__dirname, 'fixtures', 'example5.md'),
+  'utf8',
+)
+
 test('example1', (t) => {
   t.plan(1)
   const parsed = parse(example1)
@@ -49,5 +54,12 @@ test('code blocks', (t) => {
 test('nested url', (t) => {
   t.plan(1)
   const parsed = parse(example4)
+  t.snapshot(parsed)
+})
+
+test('set level 0 title', (t) => {
+  t.plan(1)
+  const parsed = parse(example5, 'Example 5')
+  // console.log(parsed)
   t.snapshot(parsed)
 })
