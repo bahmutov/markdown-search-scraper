@@ -37,8 +37,9 @@ function clone(x) {
  * For example, the header 1 will be the level 0 title.
  * @param {string} markdown Text to parse
  * @param {string|undefined} level0 Optional level 0 title to set for all records
+ * @param {string|undefined} level1 Optional level 1 title to set for all records
  */
-function parse(markdown, level0) {
+function parse(markdown, level0, level1) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
@@ -55,6 +56,15 @@ function parse(markdown, level0) {
       content: level0,
       hierarchy: clone(hierarchy),
     })
+
+    if (level1) {
+      hierarchy = makeHierarchy(level0, level1)
+      records.push({
+        type: 'lvl1',
+        content: level1,
+        hierarchy: clone(hierarchy),
+      })
+    }
   }
 
   function saveCurrentText() {

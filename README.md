@@ -80,6 +80,32 @@ const json = parse(markdownText, 'A Custom Recipe')
 */
 ```
 
+If you pass level 0 title, you can also pass a level 1 title to add as a record.
+
+```js
+const json = parse(markdownText, 'A Custom Recipe', 'Subtitle')
+/*
+  {
+    "type": "lvl0",
+    "content": "A Custom Recipe",
+    "hierarchy": {
+      "lvl0": "A Custom Recipe",
+      "lvl1": null,
+      "lvl2": null
+    }
+  },
+  {
+    content: 'Subtitle',
+    hierarchy: {
+      lvl0: 'A Custom Recipe',
+      lvl1: 'Subtitle',
+      lvl2: null,
+    },
+    type: 'lvl1',
+  },
+*/
+```
+
 ## Small print
 
 Author: Gleb Bahmutov &lt;gleb.bahmutov@gmail.com&gt; &copy; 2022

@@ -63,3 +63,10 @@ test('set level 0 title', (t) => {
   // console.log(parsed)
   t.snapshot(parsed)
 })
+
+test('set level 0 and level 1', (t) => {
+  t.plan(1)
+  const parsed = parse(example5, 'Example 5', 'Description of this example')
+  // console.log(parsed)
+  t.snapshot(parsed)
+})
