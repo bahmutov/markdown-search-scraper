@@ -3,6 +3,7 @@
 > Converts Markdown text to Algolia records
 
 - removes Markdown markup from URLs
+- removes single quotes around text
 
 ## Install
 

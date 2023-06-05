@@ -14,4 +14,12 @@ function removeCodeBlocks(md) {
   return replaced
 }
 
-module.exports = { replaceMarkdownUrls, removeCodeBlocks }
+function removeSingleTicks(md) {
+  const r = /`[^`]+`/g
+  const replaced = md.replace(r, (match, x) => {
+    return match.slice(1, match.length - 1)
+  })
+  return replaced
+}
+
+module.exports = { replaceMarkdownUrls, removeCodeBlocks, removeSingleTicks }

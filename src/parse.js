@@ -2,7 +2,11 @@
 // https://github.com/bahmutov/scrape-youtube-videos/blob/main/upload-to-algolia.js
 //
 
-const { replaceMarkdownUrls, removeCodeBlocks } = require('./md-utils')
+const {
+  replaceMarkdownUrls,
+  removeCodeBlocks,
+  removeSingleTicks,
+} = require('./md-utils')
 
 function isHeader1(line) {
   return line.match(/^#\s/)
@@ -43,6 +47,7 @@ function parse(markdown, level0, level1) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
+  markdown = removeSingleTicks(markdown)
 
   let hierarchy = makeHierarchy()
 
@@ -50,18 +55,20 @@ function parse(markdown, level0, level1) {
   let currentText = ''
 
   if (level0) {
-    hierarchy = makeHierarchy(level0)
+    const cleaned0 = removeSingleTicks(level0)
+    hierarchy = makeHierarchy(cleaned0)
     records.push({
       type: 'lvl0',
-      content: level0,
+      content: cleaned0,
       hierarchy: clone(hierarchy),
     })
 
     if (level1) {
-      hierarchy = makeHierarchy(level0, level1)
+      const cleaned1 = removeSingleTicks(level1)
+      hierarchy = makeHierarchy(cleaned0, cleaned1)
       records.push({
         type: 'lvl1',
-        content: level1,
+        content: cleaned1,
         hierarchy: clone(hierarchy),
       })
     }
