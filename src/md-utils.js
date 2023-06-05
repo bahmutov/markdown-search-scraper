@@ -22,4 +22,17 @@ function removeSingleTicks(md) {
   return replaced
 }
 
-module.exports = { replaceMarkdownUrls, removeCodeBlocks, removeSingleTicks }
+function removeBold(md) {
+  const r = /\*\*[^*]+\*\*/g
+  const replaced = md.replace(r, (match, x) => {
+    return match.slice(2, match.length - 2)
+  })
+  return replaced
+}
+
+module.exports = {
+  replaceMarkdownUrls,
+  removeCodeBlocks,
+  removeSingleTicks,
+  removeBold,
+}

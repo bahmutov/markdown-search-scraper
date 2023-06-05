@@ -6,6 +6,7 @@ const {
   replaceMarkdownUrls,
   removeCodeBlocks,
   removeSingleTicks,
+  removeBold,
 } = require('./md-utils')
 
 function isHeader1(line) {
@@ -48,6 +49,7 @@ function parse(markdown, level0, level1) {
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
   markdown = removeSingleTicks(markdown)
+  markdown = removeBold(markdown)
 
   let hierarchy = makeHierarchy()
 
@@ -55,7 +57,7 @@ function parse(markdown, level0, level1) {
   let currentText = ''
 
   if (level0) {
-    const cleaned0 = removeSingleTicks(level0)
+    const cleaned0 = removeBold(removeSingleTicks(level0))
     hierarchy = makeHierarchy(cleaned0)
     records.push({
       type: 'lvl0',
@@ -64,7 +66,7 @@ function parse(markdown, level0, level1) {
     })
 
     if (level1) {
-      const cleaned1 = removeSingleTicks(level1)
+      const cleaned1 = removeBold(removeSingleTicks(level1))
       hierarchy = makeHierarchy(cleaned0, cleaned1)
       records.push({
         type: 'lvl1',

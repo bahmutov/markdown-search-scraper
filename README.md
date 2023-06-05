@@ -4,6 +4,7 @@
 
 - removes Markdown markup from URLs
 - removes single quotes around text
+- removes `**` around text
 
 ## Install
 

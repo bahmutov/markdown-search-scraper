@@ -34,6 +34,11 @@ const example6 = readFileSync(
   'utf8',
 )
 
+const example7 = readFileSync(
+  join(__dirname, 'fixtures', 'example7.md'),
+  'utf8',
+)
+
 test('example1', (t) => {
   t.plan(1)
   const parsed = parse(example1)
@@ -83,6 +88,18 @@ test('removes backticks', (t) => {
     example6,
     'Example `number` 6',
     'Description of `this` example',
+  )
+  // console.log(parsed)
+  t.snapshot(parsed)
+})
+
+test('removes **', (t) => {
+  t.plan(1)
+  // everything has backticks
+  const parsed = parse(
+    example7,
+    'Example **urgent** 7',
+    'Description of **app** example',
   )
   // console.log(parsed)
   t.snapshot(parsed)
