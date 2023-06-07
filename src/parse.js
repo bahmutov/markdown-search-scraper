@@ -61,32 +61,21 @@ function parse(markdown, level0, level1, url) {
     }
   }
 
-  let hierarchy = makeHierarchy()
+  if (level1 && !level0) {
+    throw new Error('Cannot provide level1 without level0')
+  }
+
+  if (level0) {
+    level0 = removeBold(removeSingleTicks(level0))
+  }
+  if (level1) {
+    level1 = removeBold(removeSingleTicks(level1))
+  }
+
+  let hierarchy = makeHierarchy(level0, level1)
 
   const records = []
   let currentText = ''
-
-  if (level0) {
-    const cleaned0 = removeBold(removeSingleTicks(level0))
-    hierarchy = makeHierarchy(cleaned0)
-    records.push({
-      type: 'lvl0',
-      content: cleaned0,
-      hierarchy: clone(hierarchy),
-      url,
-    })
-
-    if (level1) {
-      const cleaned1 = removeBold(removeSingleTicks(level1))
-      hierarchy = makeHierarchy(cleaned0, cleaned1)
-      records.push({
-        type: 'lvl1',
-        content: cleaned1,
-        hierarchy: clone(hierarchy),
-        url,
-      })
-    }
-  }
 
   function saveCurrentText() {
     if (currentText) {
