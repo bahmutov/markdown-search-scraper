@@ -65,17 +65,32 @@ function parse(markdown, level0, level1, url) {
     throw new Error('Cannot provide level1 without level0')
   }
 
+  const records = []
+  let currentText = ''
+  let hierarchy
+
   if (level0) {
     level0 = removeBold(removeSingleTicks(level0))
+    hierarchy = makeHierarchy(level0)
+    records.push({
+      type: 'lvl0',
+      content: null,
+      hierarchy: clone(hierarchy),
+      url,
+    })
   }
   if (level1) {
     level1 = removeBold(removeSingleTicks(level1))
+    hierarchy = makeHierarchy(level0, level1)
+    records.push({
+      type: 'lvl1',
+      content: null,
+      hierarchy: clone(hierarchy),
+      url,
+    })
   }
 
-  let hierarchy = makeHierarchy(level0, level1)
-
-  const records = []
-  let currentText = ''
+  hierarchy = makeHierarchy(level0, level1)
 
   function saveCurrentText() {
     if (currentText) {
@@ -105,8 +120,8 @@ function parse(markdown, level0, level1, url) {
       const h1 = getHeader(line)
       hierarchy = makeHierarchy(h1)
       records.push({
-        type: 'content',
-        content: h1,
+        type: 'lvl0',
+        content: null,
         hierarchy: clone(hierarchy),
         url,
       })
@@ -118,8 +133,8 @@ function parse(markdown, level0, level1, url) {
       const h2 = getHeader(line)
       hierarchy.lvl1 = h2
       records.push({
-        type: 'content',
-        content: h2,
+        type: 'lvl1',
+        content: null,
         hierarchy: clone(hierarchy),
         url,
       })
@@ -131,8 +146,8 @@ function parse(markdown, level0, level1, url) {
       const h3 = getHeader(line)
       hierarchy.lvl1 = h3
       records.push({
-        type: 'content',
-        content: h3,
+        type: 'lvl2',
+        content: null,
         hierarchy: clone(hierarchy),
         url,
       })
