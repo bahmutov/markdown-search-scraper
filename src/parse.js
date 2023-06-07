@@ -43,13 +43,23 @@ function clone(x) {
  * @param {string} markdown Text to parse
  * @param {string|undefined} level0 Optional level 0 title to set for all records
  * @param {string|undefined} level1 Optional level 1 title to set for all records
+ * @param {string|undefined} url URL of the scraped resource
  */
-function parse(markdown, level0, level1) {
+function parse(markdown, level0, level1, url) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
   markdown = removeCodeBlocks(markdown)
   markdown = removeSingleTicks(markdown)
   markdown = removeBold(markdown)
+
+  if (url) {
+    if (typeof url !== 'string') {
+      throw new Error('URL should be a string')
+    }
+    if (!url.startsWith('http')) {
+      throw new Error(`URL "${url}" does not start with http`)
+    }
+  }
 
   let hierarchy = makeHierarchy()
 
@@ -63,6 +73,7 @@ function parse(markdown, level0, level1) {
       type: 'lvl0',
       content: cleaned0,
       hierarchy: clone(hierarchy),
+      url,
     })
 
     if (level1) {
@@ -72,6 +83,7 @@ function parse(markdown, level0, level1) {
         type: 'lvl1',
         content: cleaned1,
         hierarchy: clone(hierarchy),
+        url,
       })
     }
   }
@@ -85,6 +97,7 @@ function parse(markdown, level0, level1) {
           type: 'content',
           content: trimmed,
           hierarchy: clone(hierarchy),
+          url,
         })
       }
       currentText = ''
@@ -106,6 +119,7 @@ function parse(markdown, level0, level1) {
         type: 'lvl0',
         content: h1,
         hierarchy: clone(hierarchy),
+        url,
       })
       return
     }
@@ -118,6 +132,7 @@ function parse(markdown, level0, level1) {
         type: 'lvl1',
         content: h2,
         hierarchy: clone(hierarchy),
+        url,
       })
       return
     }
@@ -130,6 +145,7 @@ function parse(markdown, level0, level1) {
         type: 'lvl2',
         content: h3,
         hierarchy: clone(hierarchy),
+        url,
       })
       return
     }

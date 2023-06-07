@@ -104,3 +104,16 @@ test('removes **', (t) => {
   // console.log(parsed)
   t.snapshot(parsed)
 })
+
+test('adds common URL', (t) => {
+  t.plan(1)
+  // everything has backticks
+  const parsed = parse(
+    example7,
+    'Example **urgent** 7',
+    'Description of **app** example',
+    'https://acme.com',
+  )
+  // console.log(parsed)
+  t.snapshot(parsed)
+})

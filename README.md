@@ -5,6 +5,7 @@
 - removes Markdown markup from URLs
 - removes single quotes around text
 - removes `**` around text
+- add a common URL to each record
 
 ## Install
 
@@ -106,6 +107,14 @@ const json = parse(markdownText, 'A Custom Recipe', 'Subtitle')
     type: 'lvl1',
   },
 */
+```
+
+### URL
+
+You should pass an URL so that a record leads to the scraped resource
+
+```js
+const json = parse(markdownText, null, null, 'https://acme.com/doc/info')
 ```
 
 ## Small print
