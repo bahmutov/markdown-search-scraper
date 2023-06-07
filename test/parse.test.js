@@ -42,6 +42,7 @@ const example7 = readFileSync(
 test('example1', (t) => {
   t.plan(1)
   const parsed = parse(example1)
+  // console.log(parsed)
   t.snapshot(parsed)
 })
 
