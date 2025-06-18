@@ -42,13 +42,21 @@ function clone(x) {
 /**
  * Looks at the markdown text with code blocks
  * and extracts the text content, removing code blocks,
- * but keeping the comments.
+ * but keeping the JavaScript comments without the // prefix.
  * @param {string} markdown Text to parse
- * @returns {string} Text content without code blocks
+ * @returns {string} Text content without code blocks but with comments
  */
 function extractText(markdown) {
   return markdown
-    .replace(/```[\s\S]*?```/g, '') // remove code blocks
+    .replace(/```[\s\S]*?```/g, function (match) {
+      // Extract comments from the code block and remove the // prefix
+      const commentLines = match
+        .split('\n')
+        .filter((line) => line.trim().startsWith('//'))
+        .map((line) => line.trim().substring(2).trim())
+        .join('\n')
+      return commentLines ? commentLines + '\n' : ''
+    })
     .replace(/`([^`]+)`/g, '$1') // remove inline code
     .replace(/\n\s*\n/g, '\n') // remove empty lines
     .trim()
@@ -59,6 +67,26 @@ function cleanupForAI(record) {
     ...record,
     text: extractText(record.content),
   }
+}
+
+function mergeLevels(record) {
+  const { lvl0, lvl1, lvl2 } = record.hierarchy
+
+  let textStart = ''
+  if (lvl0) {
+    textStart += `${lvl0}\n`
+  }
+  if (lvl1) {
+    textStart += `${lvl1}\n`
+  }
+  if (lvl2) {
+    textStart += `${lvl2}\n`
+  }
+
+  if (textStart) {
+    record.text = textStart + record.text
+  }
+  return record
 }
 
 /**
@@ -76,7 +104,7 @@ function parseForAi(markdown, level0, level1, url) {
   // markdown = removeSingleTicks(markdown)
   markdown = removeBold(markdown)
 
-  console.log(markdown)
+  // console.log(markdown)
 
   if (url) {
     if (typeof url !== 'string') {
@@ -185,7 +213,18 @@ function parseForAi(markdown, level0, level1, url) {
 
   saveCurrentText()
 
-  return records.map(cleanupForAI)
+  return records
+    .filter((record) => record.type === 'content')
+    .map(cleanupForAI)
+    .map(mergeLevels)
+    .map((record) => {
+      // remove unused properties
+      return {
+        text: record.text,
+        content: record.content,
+        url: record.url || null,
+      }
+    })
 }
 
 module.exports = { parseForAi, cleanupForAI, extractText }
