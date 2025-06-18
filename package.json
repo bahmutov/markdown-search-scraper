@@ -11,7 +11,8 @@
     "example2": "node bin/markdown-scrape.js ./test/fixtures/example2.md",
     "example3": "node bin/markdown-scrape.js ./test/fixtures/example3.md",
     "example4": "node bin/markdown-scrape.js ./test/fixtures/example4.md",
-    "demo-readme": "node bin/markdown-scrape.js ./README.md"
+    "demo-readme": "node bin/markdown-scrape.js ./README.md",
+    "ai-example1": "node bin/markdown-scrape-for-ai.js ./test/fixtures/ai/example2.md"
   },
   "bin": {
     "markdown-scrape": "bin/markdown-scrape.js",
