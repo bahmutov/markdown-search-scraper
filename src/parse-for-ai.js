@@ -1,3 +1,5 @@
+// @ts-check
+
 // scrape records examples
 // https://github.com/bahmutov/scrape-youtube-videos/blob/main/upload-to-algolia.js
 //
@@ -38,20 +40,74 @@ function clone(x) {
 }
 
 /**
- * Converts Markdown text into Algolia records.
- * Uses convention how to assign hierarchy levels.
- * For example, the header 1 will be the level 0 title.
+ * Looks at the markdown text with code blocks
+ * and extracts the text content, removing code blocks,
+ * but keeping the JavaScript comments without the // prefix.
+ * @param {string} markdown Text to parse
+ * @returns {string} Text content without code blocks but with comments
+ */
+function extractText(markdown) {
+  return markdown
+    .replace(/```[\s\S]*?```/g, function (match) {
+      // Extract comments from the code block and remove the // prefix
+      const commentLines = match
+        .split('\n')
+        .filter((line) => line.trim().startsWith('//'))
+        .map((line) => line.trim().substring(2).trim())
+        .join('\n')
+      return commentLines ? commentLines + '\n' : ''
+    })
+    .replace(/`([^`]+)`/g, '$1') // remove inline code
+    .replace(/\n\s*\n/g, '\n') // remove empty lines
+    .trim()
+}
+
+function cleanupForAI(record) {
+  return {
+    ...record,
+    text: extractText(record.content),
+  }
+}
+
+function mergeLevels(record) {
+  const { lvl0, lvl1, lvl2 } = record.hierarchy
+
+  let textStart = ''
+  if (lvl0) {
+    textStart += `${lvl0}\n`
+  }
+  if (lvl1) {
+    textStart += `${lvl1}\n`
+  }
+  if (lvl2) {
+    textStart += `${lvl2}\n`
+  }
+
+  if (textStart) {
+    record.text = textStart + record.text
+  }
+  return record
+}
+
+/**
+ * Converts Markdown text into a list of records suitable
+ * for ingesting into AI prompts. Geared towards Markdown plus code examples.
+ *
+ * Out puts objects with cleaned up text content useful for RAG, plus
+ * the original markdown content, and an optional URL.
  * @param {string} markdown Text to parse
  * @param {string|undefined} level0 Optional level 0 title to set for all records
  * @param {string|undefined} level1 Optional level 1 title to set for all records
  * @param {string|undefined} url URL of the scraped resource
  */
-function parse(markdown, level0, level1, url) {
+function parseForAi(markdown, level0, level1, url) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
-  markdown = removeCodeBlocks(markdown)
-  markdown = removeSingleTicks(markdown)
+  // markdown = removeCodeBlocks(markdown)
+  // markdown = removeSingleTicks(markdown)
   markdown = removeBold(markdown)
+
+  // console.log(markdown)
 
   if (url) {
     if (typeof url !== 'string') {
@@ -161,6 +217,17 @@ function parse(markdown, level0, level1, url) {
   saveCurrentText()
 
   return records
+    .filter((record) => record.type === 'content')
+    .map(cleanupForAI)
+    .map(mergeLevels)
+    .map((record) => {
+      // remove unused properties
+      return {
+        text: record.text,
+        content: record.content,
+        url: record.url || null,
+      }
+    })
 }
 
-module.exports = { parse }
+module.exports = { parseForAi, cleanupForAI, extractText }

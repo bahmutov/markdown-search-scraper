@@ -20,6 +20,9 @@ jobs:
       - name: Demo README
         run: npm run demo-readme
 
+      - name: AI example 1
+        run: npm run ai-example1
+
       - name: Semantic Release 🚀
         # https://github.com/cycjimmy/semantic-release-action
         uses: cycjimmy/semantic-release-action@v4

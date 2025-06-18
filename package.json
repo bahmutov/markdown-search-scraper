@@ -11,10 +11,12 @@
     "example2": "node bin/markdown-scrape.js ./test/fixtures/example2.md",
     "example3": "node bin/markdown-scrape.js ./test/fixtures/example3.md",
     "example4": "node bin/markdown-scrape.js ./test/fixtures/example4.md",
-    "demo-readme": "node bin/markdown-scrape.js ./README.md"
+    "demo-readme": "node bin/markdown-scrape.js ./README.md",
+    "ai-example1": "node bin/markdown-scrape-for-ai.js ./test/fixtures/ai/example2.md"
   },
   "bin": {
-    "markdown-scrape": "bin/markdown-scrape.js"
+    "markdown-scrape": "bin/markdown-scrape.js",
+    "markdown-scrape-for-ai": "bin/markdown-scrape-for-ai.js"
   },
   "files": [
     "bin",
@@ -29,8 +31,9 @@
   "license": "MIT",
   "devDependencies": {
     "ava": "5.3.1",
-    "prettier": "^2.8.8",
-    "semantic-release": "^21.0.0"
+    "prettier": "3.5.3",
+    "semantic-release": "24.2.5",
+    "strip-indent": "^4.0.0"
   },
   "repository": {
     "type": "git",
