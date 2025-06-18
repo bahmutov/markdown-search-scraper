@@ -40,9 +40,15 @@ const example7 = readFileSync(
 )
 
 test('example1', (t) => {
-  t.plan(1)
+  t.plan(3)
   const parsed = parse(example1)
   // console.log(parsed)
+  t.true(Array.isArray(parsed), 'parsed should be an array')
+  t.deepEqual(
+    Object.keys(parsed[0]),
+    ['type', 'content', 'hierarchy', 'url'],
+    'first record has keys',
+  )
   t.snapshot(parsed)
 })
 
