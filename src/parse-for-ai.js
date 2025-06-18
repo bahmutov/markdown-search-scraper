@@ -1,3 +1,5 @@
+// @ts-check
+
 // scrape records examples
 // https://github.com/bahmutov/scrape-youtube-videos/blob/main/upload-to-algolia.js
 //
@@ -38,20 +40,21 @@ function clone(x) {
 }
 
 /**
- * Converts Markdown text into Algolia records.
- * Uses convention how to assign hierarchy levels.
- * For example, the header 1 will be the level 0 title.
+ * Converts Markdown text into a list of records suitable
+ * for ingesting into AI prompts. Geared towards Markdown plus code examples.
  * @param {string} markdown Text to parse
  * @param {string|undefined} level0 Optional level 0 title to set for all records
  * @param {string|undefined} level1 Optional level 1 title to set for all records
  * @param {string|undefined} url URL of the scraped resource
  */
-function parse(markdown, level0, level1, url) {
+function parseForAi(markdown, level0, level1, url) {
   // handle potentially nested links
   markdown = replaceMarkdownUrls(replaceMarkdownUrls(markdown))
-  markdown = removeCodeBlocks(markdown)
-  markdown = removeSingleTicks(markdown)
+  // markdown = removeCodeBlocks(markdown)
+  // markdown = removeSingleTicks(markdown)
   markdown = removeBold(markdown)
+
+  console.log(markdown)
 
   if (url) {
     if (typeof url !== 'string') {
@@ -163,4 +166,4 @@ function parse(markdown, level0, level1, url) {
   return records
 }
 
-module.exports = { parse }
+module.exports = { parseForAi }
