@@ -47,19 +47,23 @@ function clone(x) {
  * @returns {string} Text content without code blocks but with comments
  */
 function extractText(markdown) {
-  return markdown
-    .replace(/```[\s\S]*?```/g, function (match) {
-      // Extract comments from the code block and remove the // prefix
-      const commentLines = match
-        .split('\n')
-        .filter((line) => line.trim().startsWith('//'))
-        .map((line) => line.trim().substring(2).trim())
-        .join('\n')
-      return commentLines ? commentLines + '\n' : ''
-    })
-    .replace(/`([^`]+)`/g, '$1') // remove inline code
-    .replace(/\n\s*\n/g, '\n') // remove empty lines
-    .trim()
+  return (
+    markdown
+      .replace(/```[\s\S]*?```/g, function (match) {
+        // Extract comments from the code block and remove the // prefix
+        const commentLines = match
+          .split('\n')
+          .filter((line) => line.trim().startsWith('//'))
+          .map((line) => line.trim().substring(2).trim())
+          .join('\n')
+        return commentLines ? commentLines + '\n' : ''
+      })
+      // remove HTML comments
+      .replace(/<!--[\s\S]*?-->/g, '')
+      .replace(/`([^`]+)`/g, '$1') // remove inline code
+      .replace(/\n\s*\n/g, '\n') // remove empty lines
+      .trim()
+  )
 }
 
 function cleanupForAI(record) {

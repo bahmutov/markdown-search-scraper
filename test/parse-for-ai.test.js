@@ -15,6 +15,11 @@ const example2 = readFileSync(
   'utf8',
 )
 
+const example3 = readFileSync(
+  join(__dirname, 'fixtures', 'ai', 'example3.md'),
+  'utf8',
+)
+
 test('extractText', (t) => {
   const md = stripIndent(`
       foo
@@ -70,5 +75,14 @@ test('AI example2', (t) => {
   // console.log(parsed)
   t.true(Array.isArray(parsed), 'parsed should be an array')
   t.is(parsed.length, 2, 'two records')
+  t.snapshot(parsed)
+})
+
+test('AI example3 without HTML comments', (t) => {
+  t.plan(1)
+  const parsed = parseForAi(example3)
+  // console.log(parsed)
+  // should not have any HTML comments in the cleaned text
+  // but can have HTML comments in the original content
   t.snapshot(parsed)
 })
