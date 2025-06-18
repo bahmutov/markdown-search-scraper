@@ -14,7 +14,8 @@
     "demo-readme": "node bin/markdown-scrape.js ./README.md"
   },
   "bin": {
-    "markdown-scrape": "bin/markdown-scrape.js"
+    "markdown-scrape": "bin/markdown-scrape.js",
+    "markdown-scrape-for-ai": "bin/markdown-scrape-for-ai.js"
   },
   "files": [
     "bin",

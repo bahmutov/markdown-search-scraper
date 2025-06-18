@@ -92,6 +92,9 @@ function mergeLevels(record) {
 /**
  * Converts Markdown text into a list of records suitable
  * for ingesting into AI prompts. Geared towards Markdown plus code examples.
+ *
+ * Out puts objects with cleaned up text content useful for RAG, plus
+ * the original markdown content, and an optional URL.
  * @param {string} markdown Text to parse
  * @param {string|undefined} level0 Optional level 0 title to set for all records
  * @param {string|undefined} level1 Optional level 1 title to set for all records

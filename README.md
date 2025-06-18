@@ -24,6 +24,12 @@ You can parse a given Markdown file and print its Algolia search record as JSON
 $ npx markdown-scrape <markdown filename>
 ```
 
+You can also scrape a given Markdown file for AI purposes
+
+```
+$ npx markdown-scrape-for-ai <markdown filename>
+```
+
 ## Api
 
 ```js
