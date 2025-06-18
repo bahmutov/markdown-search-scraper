@@ -1,4 +1,5 @@
-const { parseForAi } = require('../src/parse-for-ai')
+const { parseForAi, extractText } = require('../src/parse-for-ai')
+const stripIndent = require('strip-indent').default
 
 const test = require('ava')
 const { readFileSync } = require('fs')
@@ -8,6 +9,30 @@ const example1 = readFileSync(
   join(__dirname, 'fixtures', 'ai', 'example1.md'),
   'utf8',
 )
+
+test.only('extractText', (t) => {
+  const md = stripIndent(`
+      foo
+      bar
+
+      \`\`\`js
+      // this is a comment
+      const x = 1;
+      \`\`\`
+  `)
+  const text = extractText(md)
+  const expected = stripIndent(`
+      foo
+      bar
+
+      // this is a comment
+  `)
+  t.is(
+    text,
+    expected,
+    'should extract text without code blocks but with comments',
+  )
+})
 
 test('AI example1', (t) => {
   t.plan(0)

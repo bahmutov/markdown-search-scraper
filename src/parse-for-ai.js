@@ -40,6 +40,28 @@ function clone(x) {
 }
 
 /**
+ * Looks at the markdown text with code blocks
+ * and extracts the text content, removing code blocks,
+ * but keeping the comments.
+ * @param {string} markdown Text to parse
+ * @returns {string} Text content without code blocks
+ */
+function extractText(markdown) {
+  return markdown
+    .replace(/```[\s\S]*?```/g, '') // remove code blocks
+    .replace(/`([^`]+)`/g, '$1') // remove inline code
+    .replace(/\n\s*\n/g, '\n') // remove empty lines
+    .trim()
+}
+
+function cleanupForAI(record) {
+  return {
+    ...record,
+    text: extractText(record.content),
+  }
+}
+
+/**
  * Converts Markdown text into a list of records suitable
  * for ingesting into AI prompts. Geared towards Markdown plus code examples.
  * @param {string} markdown Text to parse
@@ -163,7 +185,7 @@ function parseForAi(markdown, level0, level1, url) {
 
   saveCurrentText()
 
-  return records
+  return records.map(cleanupForAI)
 }
 
-module.exports = { parseForAi }
+module.exports = { parseForAi, cleanupForAI, extractText }
